@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stopwatch</title>
+    <style>
+      body {
+        background-image: url("https://w0.peakpx.com/wallpaper/452/86/HD-wallpaper-vintage-stop-watch-compass-map.jpg");
+        background-size: cover;
+        background-position: center;
+        font-family: "Courier New", Courier, monospace;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        text-align: center;
+        border: 2px solid #000;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        width: 300px;
+        background-color: #fff;
+      }
+
+      h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .display {
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 30px;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin: 5px;
+        font-size: 18px;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn:hover {
+        background-color: #45a049;
+      }
+
+      .btn:active {
+        background-color: #3e9141;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Stopwatch</h1>
+      <h2 id="display">00:00:00</h2>
+      <button class="btn" id="startBtn">Start</button>
+      <button class="btn" id="stopBtn">Stop</button>
+      <button class="btn" id="resetBtn">Reset</button>
+    </div>
+
+    <script>
+      let startTime;
+      let elapsedTime = 0;
+      let timerInterval;
+      let isTimerRunning = false;
+
+      function startTimer() {
+        if (!isTimerRunning) {
+          startTime = Date.now() - elapsedTime;
+          timerInterval = setInterval(function () {
+            elapsedTime = Date.now() - startTime;
+            displayTime(elapsedTime);
+          }, 10);
+          isTimerRunning = true;
+        }
+      }
+
+      function stopTimer() {
+        if (isTimerRunning) {
+          clearInterval(timerInterval);
+          isTimerRunning = false;
+        }
+      }
+
+      function resetTimer() {
+        stopTimer();
+        elapsedTime = 0;
+        displayTime(elapsedTime);
+      }
+
+      function displayTime(time) {
+        let minutes = Math.floor((time / 1000 / 60) % 60)
+          .toString()
+          .padStart(2, "0");
+        let seconds = Math.floor((time / 1000) % 60)
+          .toString()
+          .padStart(2, "0");
+        let milliseconds = Math.floor((time % 1000) / 10)
+          .toString()
+          .padStart(2, "0");
+        document.getElementById(
+          "display"
+        ).textContent = `${minutes}:${seconds}:${milliseconds}`;
+      }
+
+      document.getElementById("startBtn").addEventListener("click", startTimer);
+      document.getElementById("stopBtn").addEventListener("click", stopTimer);
+      document.getElementById("resetBtn").addEventListener("click", resetTimer);
+    </script>
+  </body>
+</html>
